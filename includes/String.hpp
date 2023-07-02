@@ -8,7 +8,7 @@ public:
   
   String(const String& other);
   String(String&& other) noexcept;
-  String(const String& lv, const String& lr);
+  String(const String& lv, const String& rv);
   
   String& operator=(const String& other);
   String& operator=(String&& other) noexcept;

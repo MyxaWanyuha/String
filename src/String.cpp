@@ -14,7 +14,7 @@ String::String(const char* cstr)
 }
 
 String::String(const String& other)
-  : m_capacity(other.m_capacity),
+  : m_capacity(other.m_size + 1),
   m_size(other.m_size),
   m_str(new char[m_capacity]) {
   String::copy(m_str, other.m_str);
@@ -119,6 +119,7 @@ void String::append(const char* str, const String::SIZE_T size) {
 }
 
 String::SIZE_T String::calculateLength(const char* cstr) noexcept {
+  if (cstr == nullptr) return 0;
   SIZE_T res = 0;
   while (cstr[res] != '\0') {
     ++res;
@@ -127,6 +128,10 @@ String::SIZE_T String::calculateLength(const char* cstr) noexcept {
 }
 
 void String::copy(char* dest, const char* src) noexcept {
+  if (src == nullptr) {
+      dest[0] = '\0';
+      return;
+  }
   while (*dest = *src) {
     ++dest;
     ++src;
@@ -134,14 +139,14 @@ void String::copy(char* dest, const char* src) noexcept {
 }
 
 bool operator>(const String& lv, const String& rv) {
-    auto lsCstr = lv.c_str();
-    auto rsCstr = rv.c_str();
-    while (*lsCstr && (*lsCstr == *rsCstr))
+    auto lvCstr = lv.c_str();
+    auto rvCstr = rv.c_str();
+    while (*lvCstr && (*lvCstr == *rvCstr))
     {
-      ++lsCstr;
-      ++rsCstr;
+      ++lvCstr;
+      ++rvCstr;
     }
-    return (*lsCstr - *rsCstr) > 0;
+    return (*lvCstr - *rvCstr) > 0;
 }
 
 String operator+(const String& lv, const String& rv) {
